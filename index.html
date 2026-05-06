@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,274 +8,455 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
+        body { background: #f8f9fa; }
         .hide { display: none !important; }
         .show { display: block !important; }
         .gradient-primary { background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%); }
         .gradient-accent { background: linear-gradient(135deg, #d4a373 0%, #c08a5d 100%); }
+        .text-accent { color: #d4a373; }
+        .audio-btn { padding: 6px 12px; background: #d4a373; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.3s; font-size: 12px; }
+        .audio-btn:hover { background: #c08a5d; transform: scale(1.05); }
     </style>
 </head>
 <body class="text-gray-800">
-    <!-- Landing Page -->
-    <div id="landing" class="show min-h-screen">
-        <!-- Header -->
-        <nav class="gradient-primary shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
+
+    <!-- LANGUAGE TOGGLE -->
+    <div class="fixed top-4 right-4 z-50 flex gap-2 bg-white rounded-lg shadow-lg p-2">
+        <button onclick="setLanguage('fr')" id="btn-fr" class="px-4 py-2 font-bold rounded-lg gradient-primary text-white transition">FR</button>
+        <button onclick="setLanguage('en')" id="btn-en" class="px-4 py-2 font-bold rounded-lg bg-gray-300 text-gray-900 transition">EN</button>
+    </div>
+
+    <!-- LANDING PAGE -->
+    <div id="landing" class="show">
+        <!-- Navigation -->
+        <nav class="gradient-primary shadow-lg sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center font-bold text-2xl gradient-primary text-white">
-                        <span style="color: #2c5aa0;">P</span>
-                    </div>
-                    <div>
-                        <h1 class="text-white font-bold text-lg hidden sm:block">PSAUC</h1>
-                        <p class="text-amber-200 text-xs hidden sm:block">Personnels de la Santé</p>
+                    <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center font-bold text-2xl" style="color: #2c5aa0;">P</div>
+                    <div class="hidden sm:block">
+                        <h1 class="text-white font-bold">PSAUC</h1>
+                        <p class="text-amber-200 text-xs lang-fr">Personnels de la Santé</p>
+                        <p class="text-amber-200 text-xs lang-en hide">Health Personnel</p>
                     </div>
                 </div>
                 <div class="flex gap-3">
-                    <button onclick="showPage('login')" class="px-6 py-2 text-white border-2 border-white rounded-lg hover:bg-white hover:text-blue-900 font-semibold transition">Se connecter</button>
-                    <button onclick="showPage('signup')" class="px-6 py-2 gradient-accent text-white rounded-lg hover:shadow-lg font-semibold transition">Rejoindre</button>
+                    <button onclick="goToLogin()" class="px-4 sm:px-6 py-2 text-white border-2 border-white rounded-lg hover:bg-white hover:text-blue-900 font-semibold transition text-sm sm:text-base lang-fr">Se connecter</button>
+                    <button onclick="goToLogin()" class="px-4 sm:px-6 py-2 text-white border-2 border-white rounded-lg hover:bg-white hover:text-blue-900 font-semibold transition text-sm sm:text-base lang-en hide">Sign In</button>
+                    
+                    <button onclick="goToSignup()" class="px-4 sm:px-6 py-2 gradient-accent text-white rounded-lg hover:shadow-lg font-semibold transition text-sm sm:text-base lang-fr">Rejoindre</button>
+                    <button onclick="goToSignup()" class="px-4 sm:px-6 py-2 gradient-accent text-white rounded-lg hover:shadow-lg font-semibold transition text-sm sm:text-base lang-en hide">Join</button>
                 </div>
             </div>
         </nav>
 
         <!-- Hero Section -->
-        <div class="py-20 px-4">
+        <div class="gradient-primary text-white py-20 px-4">
             <div class="max-w-4xl mx-auto text-center">
-                <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                    Rejoignez la <br />
-                    <span class="gradient-accent" style="background: linear-gradient(135deg, #d4a373 0%, #c08a5d 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                        communauté PSAUC
-                    </span>
+                <p class="text-amber-200 font-semibold mb-4 lang-fr">FONDÉ EN 2024 · 1 020+ MEMBRES ACTIFS</p>
+                <p class="text-amber-200 font-semibold mb-4 lang-en hide">FOUNDED 2024 · 1,020+ ACTIVE MEMBERS</p>
+                
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
+                    <span class="lang-fr">Personnels de la Santé des <span class="text-accent">Agences Unis</span> du Canada</span>
+                    <span class="lang-en hide">Health Personnel <span class="text-accent">United</span> of Canada</span>
                 </h1>
-                <p class="text-xl text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
-                    Connectez-vous avec plus de 1 000 professionnels de santé à travers le Canada. Ensemble, nous sauvons des vies.
+                
+                <div class="flex justify-center mb-4">
+                    <button class="audio-btn lang-fr" onclick="speakFrench('Sauver des vies partout où nous nous retrouvons.')">🔊 Écouter</button>
+                    <button class="audio-btn lang-en hide" onclick="speakEnglish('Save lives wherever we are.')">🔊 Listen</button>
+                </div>
+                
+                <p class="text-xl text-amber-100 italic mb-8 font-semibold">
+                    <span class="lang-fr">"Sauver des vies partout où nous nous retrouvons."</span>
+                    <span class="lang-en hide">"Save lives wherever we are."</span>
                 </p>
+                
+                <p class="text-lg text-gray-200 max-w-2xl mx-auto mb-8 leading-relaxed">
+                    <span class="lang-fr">Nés de la fraternité de la pandémie COVID-19, nous sommes 1 020 infirmières, PAB, inhalothérapeutes et éducateurs spécialisés unis pour vaincre n'importe quel défi qui menace notre chère population canadienne.</span>
+                    <span class="lang-en hide">Born from the brotherhood of the COVID-19 pandemic, we are 1,020 nurses, PSWs, respiratory therapists and specialized educators united to overcome any challenge threatening our dear Canadian population.</span>
+                </p>
+                
                 <div class="flex gap-4 justify-center flex-wrap">
-                    <button onclick="showPage('dashboard')" class="px-8 py-4 gradient-primary text-white font-bold rounded-lg hover:shadow-xl transition text-lg">
-                        Parcourir les offres →
+                    <button onclick="goToDashboard()" class="px-8 py-4 bg-white text-blue-900 font-bold rounded-lg hover:shadow-xl transition text-lg lang-fr">
+                        Mon tableau de bord →
                     </button>
-                    <button onclick="showPage('signup')" class="px-8 py-4 border-3 gradient-primary text-white font-bold rounded-lg hover:shadow-lg transition text-lg" style="border-color: #2c5aa0;">
+                    <button onclick="goToDashboard()" class="px-8 py-4 bg-white text-blue-900 font-bold rounded-lg hover:shadow-xl transition text-lg lang-en hide">
+                        My Dashboard →
+                    </button>
+                    
+                    <button onclick="goToSignup()" class="px-8 py-4 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-blue-900 transition text-lg lang-fr">
                         S'inscrire
                     </button>
+                    <button onclick="goToSignup()" class="px-8 py-4 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-blue-900 transition text-lg lang-en hide">
+                        Sign Up
+                    </button>
                 </div>
-                <p class="text-gray-600 text-sm mt-6">Accès gratuit · Connexion sécurisée · Aucun mot de passe requis</p>
             </div>
         </div>
 
         <!-- Features Section -->
-        <div class="bg-white py-20 px-4">
+        <div class="py-16 px-4 bg-white">
             <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-                <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-blue-900 rounded-lg p-8 hover:shadow-lg transition">
+                <div class="border-l-4 border-blue-900 rounded-lg p-8 bg-blue-50 hover:shadow-lg transition">
                     <div class="text-5xl mb-4">👥</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Annuaire des Membres</h3>
-                    <p class="text-gray-700">Connectez avec 1000+ professionnels qualifiés à travers le Canada</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 lang-fr">Annuaire des Membres</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 lang-en hide">Member Directory</h3>
+                    <p class="text-gray-700 lang-fr">Connectez avec 1000+ professionnels qualifiés à travers le Canada</p>
+                    <p class="text-gray-700 lang-en hide">Connect with 1,000+ qualified professionals across Canada</p>
+                    <button onclick="goToDashboard()" class="mt-4 text-blue-900 font-bold hover:underline lang-fr">Explorer l'annuaire →</button>
+                    <button onclick="goToDashboard()" class="mt-4 text-blue-900 font-bold hover:underline lang-en hide">Explore Directory →</button>
                 </div>
-                <div class="bg-gradient-to-br from-amber-50 to-amber-100 border-l-4 border-amber-700 rounded-lg p-8 hover:shadow-lg transition">
+                
+                <div class="border-l-4 border-amber-600 rounded-lg p-8 bg-amber-50 hover:shadow-lg transition">
                     <div class="text-5xl mb-4">💼</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Offres d'Emploi</h3>
-                    <p class="text-gray-700">Découvrez les meilleures opportunités en santé au Canada</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 lang-fr">Offres d'Emploi</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 lang-en hide">Job Offers</h3>
+                    <p class="text-gray-700 lang-fr">Découvrez les meilleures opportunités en santé au Canada</p>
+                    <p class="text-gray-700 lang-en hide">Discover the best healthcare opportunities in Canada</p>
+                    <button onclick="goToDashboard()" class="mt-4 text-blue-900 font-bold hover:underline lang-fr">Parcourir les offres →</button>
+                    <button onclick="goToDashboard()" class="mt-4 text-blue-900 font-bold hover:underline lang-en hide">Browse Offers →</button>
                 </div>
-                <div class="bg-gradient-to-br from-teal-50 to-teal-100 border-l-4 border-teal-700 rounded-lg p-8 hover:shadow-lg transition">
+                
+                <div class="border-l-4 border-teal-600 rounded-lg p-8 bg-teal-50 hover:shadow-lg transition">
                     <div class="text-5xl mb-4">💬</div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Forum d'Entraide</h3>
-                    <p class="text-gray-700">Partagez expériences et supportez-vous mutuellement</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 lang-fr">Forum d'Entraide</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3 lang-en hide">Support Forum</h3>
+                    <p class="text-gray-700 lang-fr">Partagez expériences et supportez-vous mutuellement</p>
+                    <p class="text-gray-700 lang-en hide">Share experiences and support each other</p>
+                    <button onclick="goToDashboard()" class="mt-4 text-blue-900 font-bold hover:underline lang-fr">Rejoindre la discussion →</button>
+                    <button onclick="goToDashboard()" class="mt-4 text-blue-900 font-bold hover:underline lang-en hide">Join Discussion →</button>
                 </div>
             </div>
         </div>
 
-        <!-- Mission Section -->
-        <div class="gradient-primary py-16 px-4 text-center">
-            <div class="max-w-3xl mx-auto">
-                <h2 class="text-4xl font-bold text-white mb-6">Notre Mission</h2>
-                <p class="text-xl text-amber-100 font-semibold">
-                    Sauver des vies partout où nous nous retrouvons
-                </p>
-                <p class="text-white mt-4 leading-relaxed">
-                    Nés de la fraternité pendant la pandémie, nous restons unis pour vaincre n'importe quel défi qui menace notre chère population canadienne.
-                </p>
+        <!-- Mission Vision Values -->
+        <div class="gradient-primary text-white py-16 px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <p class="text-amber-200 font-semibold mb-2 lang-fr">MISSION · VISION · VALEURS</p>
+                    <p class="text-amber-200 font-semibold mb-2 lang-en hide">MISSION · VISION · VALUES</p>
+                    <h2 class="text-4xl font-bold lang-fr">Ce qui nous guide</h2>
+                    <h2 class="text-4xl font-bold lang-en hide">What Guides Us</h2>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="border-l-4 border-amber-300 pl-6">
+                        <div class="flex justify-between items-center">
+                            <p class="text-amber-200 font-bold mb-2 text-lg lang-fr">MISSION</p>
+                            <p class="text-amber-200 font-bold mb-2 text-lg lang-en hide">MISSION</p>
+                            <button class="audio-btn lang-fr" onclick="speakFrench('Notre mission: Sauver des vies partout où nous nous retrouvons.')">🔊</button>
+                            <button class="audio-btn lang-en hide" onclick="speakEnglish('Our mission: Save lives wherever we are.')">🔊</button>
+                        </div>
+                        <p class="text-xl text-white font-semibold lang-fr">Sauver des vies partout où nous nous retrouvons.</p>
+                        <p class="text-xl text-white font-semibold lang-en hide">Save lives wherever we are.</p>
+                        <p class="text-gray-200 mt-2 lang-fr">C'est simple. C'est notre raison d'être. Chaque décision que nous prenons est guidée par cette mission.</p>
+                        <p class="text-gray-200 mt-2 lang-en hide">It's simple. It's our reason for being. Every decision we make is guided by this mission.</p>
+                    </div>
+
+                    <div class="border-l-4 border-amber-300 pl-6">
+                        <div class="flex justify-between items-center">
+                            <p class="text-amber-200 font-bold mb-2 text-lg lang-fr">VISION</p>
+                            <p class="text-amber-200 font-bold mb-2 text-lg lang-en hide">VISION</p>
+                            <button class="audio-btn lang-fr" onclick="speakFrench('Notre vision: Être toujours là chaque fois quon a besoin de nous.')">🔊</button>
+                            <button class="audio-btn lang-en hide" onclick="speakEnglish('Our vision: Always be there when needed.')">🔊</button>
+                        </div>
+                        <p class="text-xl text-white font-semibold lang-fr">Être toujours là chaque fois qu'on a besoin de nous.</p>
+                        <p class="text-xl text-white font-semibold lang-en hide">Always be there when we're needed.</p>
+                        <p class="text-gray-200 mt-2 lang-fr">Nous avons vaincu la pandémie. Nous sommes prêts pour n'importe quel défi — naturel, sanitaire ou géopolitique.</p>
+                        <p class="text-gray-200 mt-2 lang-en hide">We defeated the pandemic. We're ready for any challenge—natural, health, or geopolitical.</p>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- COVID Proof -->
+        <div class="py-16 px-4 bg-white">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <p class="text-amber-600 font-semibold mb-2 lang-fr">PREUVE OPÉRATIONNELLE</p>
+                    <p class="text-amber-600 font-semibold mb-2 lang-en hide">OPERATIONAL PROOF</p>
+                    <h2 class="text-4xl font-bold text-gray-900 lang-fr">Ce que nous avons accompli pendant COVID-19</h2>
+                    <h2 class="text-4xl font-bold text-gray-900 lang-en hide">What We Accomplished During COVID-19</h2>
+                    <div class="flex justify-center mt-4">
+                        <button class="audio-btn lang-fr" onclick="speakFrench('Pendant la pandémie, nous avons mobilisé plus de mille professionnels de santé à travers le Canada.')">🔊 Écouter</button>
+                        <button class="audio-btn lang-en hide" onclick="speakEnglish('During the pandemic, we mobilized over 1000 health professionals across Canada.')">🔊 Listen</button>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 border-l-4 border-blue-900 rounded-lg p-8 space-y-4">
+                    <p class="text-gray-700 leading-relaxed lang-fr">
+                        Cette expérience prouve que nous pouvons mobiliser 1 000+ personnes rapidement, nous adapter à des situations imprévisibles, maintenir des opérations dans des zones difficiles, et coordonner multi-régionnalement.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed lang-en hide">
+                        This experience proves we can mobilize 1,000+ people quickly, adapt to unpredictable situations, maintain operations in difficult areas, and coordinate multi-regionally.
+                    </p>
+                    <p class="text-gray-900 font-bold text-lg lang-fr">Si nous pouvons faire ça pour une pandémie, nous pouvons le faire pour n'importe quelle crise nationale.</p>
+                    <p class="text-gray-900 font-bold text-lg lang-en hide">If we can do it for a pandemic, we can do it for any national crisis.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Three Pillars -->
+        <div class="py-16 px-4 bg-gray-100">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <p class="text-amber-600 font-semibold mb-2 lang-fr">NOS PILIERS</p>
+                    <p class="text-amber-600 font-semibold mb-2 lang-en hide">OUR PILLARS</p>
+                    <h2 class="text-4xl font-bold text-gray-900 lang-fr">Trois piliers d'activité</h2>
+                    <h2 class="text-4xl font-bold text-gray-900 lang-en hide">Three Pillars of Activity</h2>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-lg p-8 shadow-md hover:shadow-lg transition">
+                        <div class="text-4xl mb-4">💼</div>
+                        <p class="text-gray-500 text-sm font-semibold mb-2">01</p>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 lang-fr">Plateforme d'Emploi & Collaboration</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 lang-en hide">Employment Platform & Collaboration</h3>
+                        <p class="text-gray-700 leading-relaxed lang-fr">Quelqu'un cherche un shift ? Quelqu'un a besoin de soignants ? Les offres sont postées instantanément.</p>
+                        <p class="text-gray-700 leading-relaxed lang-en hide">Looking for a shift? Need healthcare workers? Job postings are instant.</p>
+                    </div>
+
+                    <div class="bg-white rounded-lg p-8 shadow-md hover:shadow-lg transition">
+                        <div class="text-4xl mb-4">📚</div>
+                        <p class="text-gray-500 text-sm font-semibold mb-2">02</p>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 lang-fr">Communauté & Apprentissage</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 lang-en hide">Community & Learning</h3>
+                        <p class="text-gray-700 leading-relaxed lang-fr">Webinaires mensuels, discussions sur les nouvelles approches de soins, cas d'étude et ressources partagées.</p>
+                        <p class="text-gray-700 leading-relaxed lang-en hide">Monthly webinars, discussions on new care approaches, case studies and shared resources.</p>
+                    </div>
+
+                    <div class="bg-white rounded-lg p-8 shadow-md hover:shadow-lg transition">
+                        <div class="text-4xl mb-4">⚖️</div>
+                        <p class="text-gray-500 text-sm font-semibold mb-2">03</p>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 lang-fr">Défense des Droits & Advocacy</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4 lang-en hide">Rights Defense & Advocacy</h3>
+                        <p class="text-gray-700 leading-relaxed lang-fr">1 000 voix collectives = un poids politique réel.</p>
+                        <p class="text-gray-700 leading-relaxed lang-en hide">1,000 collective voices = real political weight.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Geographic Presence -->
+        <div class="py-16 px-4 bg-gradient-to-br from-blue-50 to-blue-100">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-900 lang-fr">Présents partout au Canada</h2>
+                    <h2 class="text-4xl font-bold text-gray-900 lang-en hide">Present Everywhere in Canada</h2>
+                    <p class="text-gray-600 mt-4 lang-fr">Nos membres sont déployés dans 7 régions</p>
+                    <p class="text-gray-600 mt-4 lang-en hide">Our members are deployed across 7 regions</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-lg p-4 text-center shadow-md">📍 Montréal</div>
+                    <div class="bg-white rounded-lg p-4 text-center shadow-md">📍 Québec City</div>
+                    <div class="bg-white rounded-lg p-4 text-center shadow-md">📍 Shawinigan</div>
+                    <div class="bg-white rounded-lg p-4 text-center shadow-md">📍 Trois-Rivières</div>
+                    <div class="bg-white rounded-lg p-4 text-center shadow-md">📍 Gatineau</div>
+                    <div class="bg-white rounded-lg p-4 text-center shadow-md">📍 Saint-Georges</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="gradient-primary text-white py-16 px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-12 mb-12">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center font-bold text-blue-900">P</div>
+                            <div>
+                                <h3 class="text-xl font-bold">PSAUC</h3>
+                                <p class="text-amber-200 text-sm lang-fr">Personnels des Agences Unis du Canada</p>
+                                <p class="text-amber-200 text-sm lang-en hide">Health Personnel United of Canada</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 leading-relaxed mb-6 lang-fr">
+                            Une communauté de professionnels de santé et d'éducateurs spécialisés, unis pour s'entraider et faire avancer leurs carrières.
+                        </p>
+                        <p class="text-gray-300 leading-relaxed mb-6 lang-en hide">
+                            A community of health professionals and specialized educators, united to support each other and advance their careers.
+                        </p>
+                        <p class="text-gray-300 lang-fr">📍 Saint-Georges de Beauce, Québec</p>
+                        <p class="text-gray-300 lang-en hide">📍 Saint-Georges de Beauce, Quebec</p>
+                        <p class="text-gray-300 mt-2">📞 +1 (581) 673-7632</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold mb-6 uppercase lang-fr">Navigation</h4>
+                        <h4 class="text-lg font-bold mb-6 uppercase lang-en hide">Navigation</h4>
+                        <ul class="space-y-3">
+                            <li><button onclick="window.scrollTo(0,0)" class="text-gray-300 hover:text-white transition lang-fr">Accueil</button></li>
+                            <li><button onclick="window.scrollTo(0,0)" class="text-gray-300 hover:text-white transition lang-en hide">Home</button></li>
+                            <li><button onclick="goToDashboard()" class="text-gray-300 hover:text-white transition lang-fr">Offres d'emploi</button></li>
+                            <li><button onclick="goToDashboard()" class="text-gray-300 hover:text-white transition lang-en hide">Job Offers</button></li>
+                            <li><button onclick="goToDashboard()" class="text-gray-300 hover:text-white transition lang-fr">Tableau de bord</button></li>
+                            <li><button onclick="goToDashboard()" class="text-gray-300 hover:text-white transition lang-en hide">Dashboard</button></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-blue-400 pt-8">
+                    <p class="text-gray-400 text-center mt-8">
+                        © 2024 PSAUC. <span class="lang-fr">Tous droits réservés.</span><span class="lang-en hide">All rights reserved.</span>
+                    </p>
+                </div>
+            </div>
+        </footer>
     </div>
 
-    <!-- Login Page -->
+    <!-- LOGIN PAGE -->
     <div id="login" class="hide min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-gray-100 to-gray-200">
         <div class="w-full max-w-md">
             <div class="bg-white rounded-xl shadow-2xl p-8">
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 gradient-primary rounded-lg flex items-center justify-center font-bold text-white text-3xl mx-auto">P</div>
-                </div>
-                <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">Se connecter</h2>
+                <h2 class="text-3xl font-bold text-gray-900 text-center mb-8 lang-fr">Se connecter</h2>
+                <h2 class="text-3xl font-bold text-gray-900 text-center mb-8 lang-en hide">Sign In</h2>
                 <div class="space-y-4">
-                    <input type="email" placeholder="Adresse email" class="w-full bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-600 rounded-lg px-4 py-3 focus:border-blue-900 focus:outline-none transition" />
-                    <input type="password" placeholder="Mot de passe" class="w-full bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-600 rounded-lg px-4 py-3 focus:border-blue-900 focus:outline-none transition" />
-                    <button onclick="showPage('dashboard')" class="w-full gradient-primary text-white font-bold py-3 rounded-lg hover:shadow-lg transition text-lg">
+                    <input type="email" placeholder="Email" class="w-full bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-600 rounded-lg px-4 py-3 focus:border-blue-900 focus:outline-none transition" />
+                    <input type="password" placeholder="Password" class="w-full bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-600 rounded-lg px-4 py-3 focus:border-blue-900 focus:outline-none transition" />
+                    <button onclick="goToDashboard()" class="w-full gradient-primary text-white font-bold py-3 rounded-lg hover:shadow-lg transition text-lg lang-fr">
                         Se connecter
                     </button>
+                    <button onclick="goToDashboard()" class="w-full gradient-primary text-white font-bold py-3 rounded-lg hover:shadow-lg transition text-lg lang-en hide">
+                        Sign In
+                    </button>
                 </div>
-                <p class="text-center text-gray-600 mt-6">
-                    Pas encore de compte? <button onclick="showPage('signup')" class="gradient-accent text-white font-bold hover:opacity-90">S'inscrire</button>
-                </p>
-                <button onclick="showPage('landing')" class="w-full mt-4 text-gray-600 hover:text-gray-900 font-semibold">← Retour</button>
+                <button onclick="goToLanding()" class="w-full mt-4 text-gray-600 hover:text-gray-900 font-semibold lang-fr">← Retour</button>
+                <button onclick="goToLanding()" class="w-full mt-4 text-gray-600 hover:text-gray-900 font-semibold lang-en hide">← Back</button>
             </div>
         </div>
     </div>
 
-    <!-- Signup Page -->
+    <!-- SIGNUP PAGE -->
     <div id="signup" class="hide min-h-screen flex items-center justify-center px-4 bg-gradient-to-br from-gray-100 to-gray-200">
         <div class="w-full max-w-md">
             <div class="bg-white rounded-xl shadow-2xl p-8">
-                <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">Créer mon profil</h2>
+                <h2 class="text-3xl font-bold text-gray-900 text-center mb-8 lang-fr">Créer mon profil</h2>
+                <h2 class="text-3xl font-bold text-gray-900 text-center mb-8 lang-en hide">Create My Profile</h2>
                 <div class="space-y-4">
-                    <input placeholder="Nom complet" class="w-full bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-600 rounded-lg px-4 py-3 focus:border-blue-900 focus:outline-none transition" />
-                    <input placeholder="Adresse email" class="w-full bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-600 rounded-lg px-4 py-3 focus:border-blue-900 focus:outline-none transition" />
+                    <input placeholder="Full Name" class="w-full bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-600 rounded-lg px-4 py-3 focus:border-blue-900 focus:outline-none transition" />
+                    <input placeholder="Email" class="w-full bg-gray-50 border-2 border-gray-300 text-gray-900 placeholder-gray-600 rounded-lg px-4 py-3 focus:border-blue-900 focus:outline-none transition" />
                     <select class="w-full bg-gray-50 border-2 border-gray-300 text-gray-900 rounded-lg px-4 py-3 focus:border-blue-900 focus:outline-none transition">
-                        <option class="text-gray-900">Sélectionner votre profession</option>
-                        <option class="text-gray-900">Infirmière Diplômée</option>
-                        <option class="text-gray-900">Infirmière Auxiliaire</option>
-                        <option class="text-gray-900">Préposé aux Bénéficiaires</option>
-                        <option class="text-gray-900">Inhalothérapeute</option>
+                        <option class="text-gray-900 lang-fr">Sélectionner votre profession</option>
+                        <option class="text-gray-900 lang-en hide">Select your profession</option>
+                        <option class="text-gray-900">Infirmière Diplômée (RN)</option>
+                        <option class="text-gray-900">Infirmière Auxiliaire (LPN)</option>
+                        <option class="text-gray-900">Préposé aux Bénéficiaires (PAB)</option>
+                        <option class="text-gray-900">Inhalothérapeute (RT)</option>
                     </select>
-                    <button onclick="showPage('dashboard')" class="w-full gradient-primary text-white font-bold py-3 rounded-lg hover:shadow-lg transition text-lg">
+                    <button onclick="goToDashboard()" class="w-full gradient-primary text-white font-bold py-3 rounded-lg hover:shadow-lg transition text-lg lang-fr">
                         Créer mon profil
                     </button>
+                    <button onclick="goToDashboard()" class="w-full gradient-primary text-white font-bold py-3 rounded-lg hover:shadow-lg transition text-lg lang-en hide">
+                        Create Profile
+                    </button>
                 </div>
-                <button onclick="showPage('landing')" class="w-full mt-4 text-gray-600 hover:text-gray-900 font-semibold">← Retour</button>
+                <button onclick="goToLanding()" class="w-full mt-4 text-gray-600 hover:text-gray-900 font-semibold lang-fr">← Retour</button>
+                <button onclick="goToLanding()" class="w-full mt-4 text-gray-600 hover:text-gray-900 font-semibold lang-en hide">← Back</button>
             </div>
         </div>
     </div>
 
-    <!-- Dashboard -->
-    <div id="dashboard" class="hide min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
-        <!-- Top Nav -->
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="hide min-h-screen bg-gray-100">
         <nav class="gradient-primary shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center font-bold text-gray-900">P</div>
                     <span class="text-xl font-bold text-white hidden sm:inline">PSAUC</span>
                 </div>
-                <button onclick="showPage('landing')" class="px-6 py-2 text-white border-2 border-white rounded-lg hover:bg-white hover:text-blue-900 font-semibold transition">
+                <button onclick="goToLanding()" class="px-6 py-2 text-white border-2 border-white rounded-lg hover:bg-white hover:text-blue-900 font-semibold transition lang-fr">
                     Déconnexion
+                </button>
+                <button onclick="goToLanding()" class="px-6 py-2 text-white border-2 border-white rounded-lg hover:bg-white hover:text-blue-900 font-semibold transition lang-en hide">
+                    Sign Out
                 </button>
             </div>
         </nav>
 
         <div class="max-w-7xl mx-auto px-4 py-12">
-            <!-- Tabs -->
-            <div class="flex gap-4 mb-8 flex-wrap">
-                <button onclick="switchTab('members')" class="tab-btn px-6 py-3 rounded-lg font-bold gradient-primary text-white shadow-lg">
-                    👥 Membres
-                </button>
-                <button onclick="switchTab('jobs')" class="tab-btn px-6 py-3 rounded-lg font-bold bg-white text-gray-900 border-2 border-gray-300 hover:shadow-lg transition">
-                    💼 Offres d'Emploi
-                </button>
-                <button onclick="switchTab('forum')" class="tab-btn px-6 py-3 rounded-lg font-bold bg-white text-gray-900 border-2 border-gray-300 hover:shadow-lg transition">
-                    💬 Forum
-                </button>
-            </div>
+            <h1 class="text-4xl font-bold text-gray-900 mb-8 lang-fr">Tableau de bord</h1>
+            <h1 class="text-4xl font-bold text-gray-900 mb-8 lang-en hide">Dashboard</h1>
 
-            <!-- Members Tab -->
-            <div id="members-content" class="tab-content grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition">
-                    <div class="text-5xl mb-4">👤</div>
-                    <h3 class="text-xl font-bold text-gray-900">Dr. Sophie Martin</h3>
-                    <p class="text-blue-900 font-semibold mt-1">Infirmière Diplômée</p>
-                    <p class="text-gray-600 mt-3">📍 Montréal, QC</p>
-                    <button class="w-full mt-4 bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800 transition">Voir le profil</button>
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                    <p class="text-5xl font-bold gradient-accent" style="background: linear-gradient(135deg, #d4a373 0%, #c08a5d 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">1 020+</p>
+                    <p class="text-gray-600 mt-3 lang-fr">Membres actifs</p>
+                    <p class="text-gray-600 mt-3 lang-en hide">Active Members</p>
                 </div>
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition">
-                    <div class="text-5xl mb-4">👤</div>
-                    <h3 class="text-xl font-bold text-gray-900">Jean Tremblay</h3>
-                    <p class="text-blue-900 font-semibold mt-1">Préposé aux Bénéficiaires</p>
-                    <p class="text-gray-600 mt-3">📍 Québec City, QC</p>
-                    <button class="w-full mt-4 bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800 transition">Voir le profil</button>
+                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                    <p class="text-5xl font-bold text-blue-900">7</p>
+                    <p class="text-gray-600 mt-3 lang-fr">Régions du Canada</p>
+                    <p class="text-gray-600 mt-3 lang-en hide">Canadian Regions</p>
                 </div>
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition">
-                    <div class="text-5xl mb-4">👤</div>
-                    <h3 class="text-xl font-bold text-gray-900">Marie Dupont</h3>
-                    <p class="text-blue-900 font-semibold mt-1">Inhalothérapeute</p>
-                    <p class="text-gray-600 mt-3">📍 Shawinigan, QC</p>
-                    <button class="w-full mt-4 bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800 transition">Voir le profil</button>
+                <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                    <p class="text-5xl font-bold text-blue-900">3</p>
+                    <p class="text-gray-600 mt-3 lang-fr">Piliers d'activité</p>
+                    <p class="text-gray-600 mt-3 lang-en hide">Pillars of Activity</p>
                 </div>
             </div>
 
-            <!-- Jobs Tab -->
-            <div id="jobs-content" class="tab-content hide space-y-4">
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-900">Infirmière - Urgence</h3>
-                            <p class="text-gray-600 mt-2">📍 Montréal, QC</p>
-                        </div>
-                        <span class="text-green-600 font-bold text-lg bg-green-100 px-4 py-2 rounded-lg">28-32$/h</span>
-                    </div>
-                    <button class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800 transition">Voir l'offre</button>
-                </div>
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-900">PAB - CHSLD</h3>
-                            <p class="text-gray-600 mt-2">📍 Shawinigan, QC</p>
-                        </div>
-                        <span class="text-green-600 font-bold text-lg bg-green-100 px-4 py-2 rounded-lg">18-20$/h</span>
-                    </div>
-                    <button class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800 transition">Voir l'offre</button>
-                </div>
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-900">Inhalothérapeute</h3>
-                            <p class="text-gray-600 mt-2">📍 Québec City, QC</p>
-                        </div>
-                        <span class="text-green-600 font-bold text-lg bg-green-100 px-4 py-2 rounded-lg">32-35$/h</span>
-                    </div>
-                    <button class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800 transition">Voir l'offre</button>
-                </div>
-            </div>
-
-            <!-- Forum Tab -->
-            <div id="forum-content" class="tab-content hide space-y-4">
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition cursor-pointer">
-                    <h3 class="text-xl font-bold text-gray-900">Nouvelles protocoles de triage</h3>
-                    <p class="text-gray-600 text-sm mt-2">Par Sophie M.</p>
-                    <p class="text-blue-900 font-semibold mt-3">💬 12 réponses</p>
-                </div>
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition cursor-pointer">
-                    <h3 class="text-xl font-bold text-gray-900">Loi sur les conditions de travail</h3>
-                    <p class="text-gray-600 text-sm mt-2">Par Jean T.</p>
-                    <p class="text-blue-900 font-semibold mt-3">💬 28 réponses</p>
-                </div>
-                <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition cursor-pointer">
-                    <h3 class="text-xl font-bold text-gray-900">Formation militaire - Questions</h3>
-                    <p class="text-gray-600 text-sm mt-2">Par Marie D.</p>
-                    <p class="text-blue-900 font-semibold mt-3">💬 45 réponses</p>
-                </div>
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 lang-fr">Bienvenue dans PSAUC!</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 lang-en hide">Welcome to PSAUC!</h2>
+                <p class="text-gray-700 leading-relaxed mb-6 lang-fr">
+                    Vous êtes maintenant connecté à une communauté de 1 020+ professionnels de santé et d'éducateurs spécialisés à travers le Canada.
+                </p>
+                <p class="text-gray-700 leading-relaxed mb-6 lang-en hide">
+                    You are now connected to a community of 1,020+ health professionals and specialized educators across Canada.
+                </p>
             </div>
         </div>
     </div>
 
     <script>
-        function showPage(pageName) {
+        let currentLanguage = 'fr';
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            const frElements = document.querySelectorAll('.lang-fr');
+            const enElements = document.querySelectorAll('.lang-en');
+            
+            if (lang === 'fr') {
+                frElements.forEach(el => el.classList.remove('hide'));
+                enElements.forEach(el => el.classList.add('hide'));
+                document.getElementById('btn-fr').classList.add('gradient-primary', 'text-white');
+                document.getElementById('btn-fr').classList.remove('bg-gray-300', 'text-gray-900');
+                document.getElementById('btn-en').classList.remove('gradient-primary', 'text-white');
+                document.getElementById('btn-en').classList.add('bg-gray-300', 'text-gray-900');
+            } else {
+                frElements.forEach(el => el.classList.add('hide'));
+                enElements.forEach(el => el.classList.remove('hide'));
+                document.getElementById('btn-en').classList.add('gradient-primary', 'text-white');
+                document.getElementById('btn-en').classList.remove('bg-gray-300', 'text-gray-900');
+                document.getElementById('btn-fr').classList.remove('gradient-primary', 'text-white');
+                document.getElementById('btn-fr').classList.add('bg-gray-300', 'text-gray-900');
+            }
+        }
+
+        function speakFrench(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'fr-FR';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function speakEnglish(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function goToLanding() { hideAll(); document.getElementById('landing').classList.remove('hide'); window.scrollTo(0,0); }
+        function goToLogin() { hideAll(); document.getElementById('login').classList.remove('hide'); }
+        function goToSignup() { hideAll(); document.getElementById('signup').classList.remove('hide'); }
+        function goToDashboard() { hideAll(); document.getElementById('dashboard').classList.remove('hide'); window.scrollTo(0,0); }
+        function hideAll() {
             document.getElementById('landing').classList.add('hide');
             document.getElementById('login').classList.add('hide');
             document.getElementById('signup').classList.add('hide');
             document.getElementById('dashboard').classList.add('hide');
-            
-            document.getElementById(pageName).classList.remove('hide');
         }
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hide'));
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('gradient-primary', 'text-white', 'shadow-lg');
-                btn.classList.add('bg-white', 'text-gray-900', 'border-2', 'border-gray-300');
-            });
-
-            document.getElementById(tabName + '-content').classList.remove('hide');
-            
-            if (event.target) {
-                event.target.classList.add('gradient-primary', 'text-white', 'shadow-lg');
-                event.target.classList.remove('bg-white', 'text-gray-900', 'border-2', 'border-gray-300');
-            }
-        }
+        // Initialize with French
+        setLanguage('fr');
     </script>
 </body>
 </html>
